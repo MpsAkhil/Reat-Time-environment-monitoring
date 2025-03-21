@@ -2,7 +2,7 @@
   --green: lightgreen;
   --black: black;
   --light-color: #666;
-  --box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .1);
+  --box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
 }
 
 * {
@@ -41,6 +41,7 @@ html::-webkit-scrollbar-thumb:hover {
   background: orangered;
 }
 
+/* Header */
 header {
   position: fixed;
   top: 0;
@@ -67,8 +68,8 @@ header .logo i {
 
 header .navbar a {
   font-size: 1.7rem;
-  border-radius: .5rem;
-  padding: .5rem 1.5rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.5rem;
   color: var(--light-color);
 }
 
@@ -103,13 +104,16 @@ header .icons #menu-bars {
   display: none;
 }
 
+/* Sidebar */
 .sidebar {
-  margin-top: 65px;
+  position: fixed;
+  top: 65px; /* Adjusted to account for the header height */
+  left: 0;
   width: 300px;
-  height: 100vh;
+  height: calc(100vh - 65px); /* Adjusted to account for the header height */
   background: white;
   box-shadow: var(--box-shadow);
-  float: left;
+  overflow-y: hidden; /* Remove scrollbar */
 }
 
 .sidebar .text {
@@ -164,12 +168,36 @@ header .icons #menu-bars {
   border-left: 10px solid orangered;
 }
 
+/* Main Content */
 .main-content {
-  margin-left: 320px;
+  margin-left: 300px; /* Adjusted to account for the sidebar width */
   padding: 20px;
-  min-height: 150vh;
+  min-height: calc(100vh - 65px); /* Adjusted to account for header */
+  margin-top: 65px; /* Adjusted to account for the header height */
+  padding-bottom: 250px; /* Increased padding to push footer down */
+  width: calc(100% - 300px); /* Ensure main content takes remaining width */
 }
 
+/* Correlation Page Container */
+.correlation-page-container {
+  width: 100%;
+  padding: 20px;
+  background: #f4f4f4;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+}
+
+.correlation-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+}
+
+/* Footer */
 .footer {
   background: #24262b;
   padding: 50px 0;
@@ -177,9 +205,12 @@ header .icons #menu-bars {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  position: relative;
+  position: relative;  /* Changed from fixed to relative */
+  width: 100%;
   z-index: 1;
   clear: both;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 100px; /* Added margin to push footer down */
 }
 
 .footer-col {
@@ -218,4 +249,13 @@ header .icons #menu-bars {
 
 .footer .social-links a:hover {
   color: orangered;
+}
+
+/* Add a wrapper for the entire page content */
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-y: auto; /* Enable scrolling */
 }
