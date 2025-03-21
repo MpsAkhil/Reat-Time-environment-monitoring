@@ -1,5 +1,7 @@
+// src/components/GaugeComponent.js
 import React, { useEffect } from "react";
 import { RadialGauge } from "canvas-gauges";
+import "./Gps.css"; // Import the same CSS file
 
 const GaugeComponent = ({ id, value, unit, min, max }) => {
   useEffect(() => {

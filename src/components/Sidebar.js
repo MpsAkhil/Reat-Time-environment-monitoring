@@ -19,6 +19,7 @@ function Sidebar() {
         <li><a href="#">📊 Visualization</a></li>
         <li><a href="#">📍 Monitor Multiple Locations</a></li>
         <li onClick={() => handleNavigation('/corelation')}><a>🚨 Corelation</a></li>
+        <li><a href="#">🚨 Image Classifier</a></li>
         <li><a href="#">🚨 Alert Management</a></li>
         <li><a href="#">🔔 Notifications</a></li>
         <li><a href="#">💬 Feedback</a></li>

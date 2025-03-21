@@ -1,12 +1,14 @@
+// src/components/Gps.js
 import React, { useState, useEffect } from "react";
 import GaugeComponent from "./GaugeComponent";
+import "./Gps.css"; // Import CSS file
 
 const Gps = () => {
   const [weather, setWeather] = useState(null);
   const [lat, setLat] = useState(null);
   const [lon, setLon] = useState(null);
   const [timestamp, setTimestamp] = useState(null);
-  const [city, setCity] = useState(""); // State for city name
+  const [city, setCity] = useState("");
 
   useEffect(() => {
     const fetchWeather = async (latitude, longitude) => {
@@ -16,7 +18,7 @@ const Gps = () => {
         );
         const data = await response.json();
         setWeather(data);
-        setCity(data.name); // Extract city name
+        setCity(data.name);
         setTimestamp(new Date().toLocaleTimeString());
         console.log("Weather updated at:", new Date().toLocaleTimeString(), data);
       } catch (error) {
@@ -43,37 +45,37 @@ const Gps = () => {
     };
 
     getLocation();
-    const interval = setInterval(getLocation, 10000); // Fetch location & weather every 10 sec
+    const interval = setInterval(getLocation, 10000);
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div>
+    <div className="weather-dashboard">
       <h1>Weather Dashboard</h1>
       {weather ? (
         <div>
           <h3>Last Updated: {timestamp}</h3>
-          <h2>📍 {city}</h2> {/* Display City Name */}
+          <h2>📍 {city}</h2>
           <p>Coordinates: {lat}, {lon}</p>
 
-          <div style={{ display: "flex", gap: "20px" }}>
+          <div className="gauges-container">
             {/* Temperature Gauge */}
-            <div>
+            <div className="gauge-item">
               <h4>Temperature</h4>
               <GaugeComponent id="tempGauge" value={weather.main.temp} unit="°C" min={-10} max={50} />
               <p>{weather.main.temp} °C</p>
             </div>
 
             {/* Humidity Gauge */}
-            <div>
+            <div className="gauge-item">
               <h4>Humidity</h4>
               <GaugeComponent id="humidityGauge" value={weather.main.humidity} unit="%" min={0} max={100} />
               <p>{weather.main.humidity} %</p>
             </div>
 
             {/* Wind Speed Gauge */}
-            <div>
+            <div className="gauge-item">
               <h4>Wind Speed</h4>
               <GaugeComponent id="windGauge" value={weather.wind.speed} unit="m/s" min={0} max={20} />
               <p>{weather.wind.speed} m/s</p>
@@ -81,7 +83,7 @@ const Gps = () => {
           </div>
         </div>
       ) : (
-        <p>Loading weather data...</p>
+        <p className="loading-message">Loading weather data...</p>
       )}
     </div>
   );

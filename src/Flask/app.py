@@ -25,6 +25,14 @@ geolocator = Nominatim(user_agent="weather_correlation_app", timeout=15)
 
 # ----------------------------- Helper Functions -----------------------------
 
+def fetch_current_weather(lat, lon):
+    """Fetch current weather data from OpenWeather API using latitude and longitude."""
+    url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&units=metric&appid={API_KEY}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    return None
+
 def fetch_weather(city):
     """Fetch current weather data from OpenWeather API for a city."""
     url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
@@ -144,6 +152,20 @@ def fetch_historical_weather(city):
     return df
 
 # ----------------------------- Endpoints -----------------------------
+
+@app.route("/weather", methods=["GET"])
+def get_weather():
+    """Endpoint to fetch current weather data using latitude and longitude."""
+    lat = request.args.get("lat")
+    lon = request.args.get("lon")
+    if not lat or not lon:
+        return jsonify({"error": "Missing latitude or longitude"}), 400
+
+    weather_data = fetch_current_weather(lat, lon)
+    if weather_data:
+        return jsonify(weather_data)
+    else:
+        return jsonify({"error": "Failed to fetch weather data"}), 500
 
 @app.route("/rankings/default", methods=["GET"])
 def get_default_rankings():
