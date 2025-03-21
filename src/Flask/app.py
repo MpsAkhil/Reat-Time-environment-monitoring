@@ -1,11 +1,30 @@
+import os
+import io
+import numpy as np
+import tensorflow as tf
 from flask import Flask, request, jsonify
+from PIL import Image
+from flask_cors import CORS
+import joblib
 import requests
 import pandas as pd
-from flask_cors import CORS
 from geopy.geocoders import Nominatim
 
+# Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})  # Allow all origins for all endpoints
+
+# Load the machine learning model
+MODEL_PATH = "modellast.pkl"
+try:
+    model = joblib.load(MODEL_PATH)
+    print("✅ Model loaded successfully!")
+except Exception as e:
+    print("❌ Error loading model:", str(e))
+    model = None
+
+# Class labels for the ML model
+CLASS_LABELS = ["Cloudy", "Rainy", "Sunny", "Sunrise"]
 
 # OpenWeather API Key
 API_KEY = "7eeba6a8fe29e05163a9d8011bffcba3"
@@ -24,6 +43,14 @@ DEFAULT_CITIES = ["Delhi", "Mumbai", "Kolkata", "Chennai", "Bangalore", "Hyderab
 geolocator = Nominatim(user_agent="weather_correlation_app", timeout=15)
 
 # ----------------------------- Helper Functions -----------------------------
+
+def preprocess_image(image):
+    """Preprocess image to match model input format."""
+    image = image.convert("RGB")  # Ensure RGB mode
+    image = image.resize((150, 150))  # Resize to (150, 150) as expected by model
+    image = np.array(image, dtype=np.float32) / 255.0  # Normalize pixel values
+    image = np.expand_dims(image, axis=0)  # Add batch dimension (1, 150, 150, 3)
+    return image
 
 def fetch_current_weather(lat, lon):
     """Fetch current weather data from OpenWeather API using latitude and longitude."""
@@ -153,6 +180,39 @@ def fetch_historical_weather(city):
 
 # ----------------------------- Endpoints -----------------------------
 
+@app.route("/predict", methods=["POST"])
+def predict():
+    """Endpoint for weather classification using the ML model."""
+    print("🔮 Received prediction request")
+
+    if "file" not in request.files:
+        print("❌ No file found in request")
+        return jsonify({"error": "No file uploaded"}), 400
+
+    file = request.files["file"]
+
+    try:
+        # Read the file and preprocess
+        image = Image.open(io.BytesIO(file.read()))
+        processed_image = preprocess_image(image)
+
+        if model is None:
+            print("❌ Model not loaded")
+            return jsonify({"error": "Model not available"}), 500
+
+        # Make a prediction
+        prediction = model.predict(processed_image)
+        print("📊 Prediction probabilities:", prediction)
+
+        predicted_class = CLASS_LABELS[np.argmax(prediction)]
+        print("✅ Predicted Class:", predicted_class)
+
+        return jsonify({"prediction": predicted_class})
+
+    except Exception as e:
+        print("❌ Error during prediction:", str(e))
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/weather", methods=["GET"])
 def get_weather():
     """Endpoint to fetch current weather data using latitude and longitude."""
@@ -227,4 +287,4 @@ def get_correlation():
 # ----------------------------- Main -----------------------------
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)
