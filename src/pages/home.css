@@ -106,11 +106,11 @@ header .icons #menu-bars {
 
 /* Sidebar */
 .sidebar {
-  position: fixed;
+  position: absolute;
   top: 65px; /* Adjusted to account for the header height */
   left: 0;
   width: 300px;
-  height: calc(100vh - 65px); /* Adjusted to account for the header height */
+  height: 1099px; /* Adjusted to account for the header height */
   background: white;
   box-shadow: var(--box-shadow);
   overflow-y: hidden; /* Remove scrollbar */
@@ -188,6 +188,25 @@ header .icons #menu-bars {
 }
 
 .correlation-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+}
+
+/* Ranking Page Container */
+.ranking-page-container {
+  width: 100%;
+  padding: 20px;
+  background: #f4f4f4;
+  border-radius: 15px;
+  box-shadow: var(--box-shadow);
+}
+
+.ranking-content {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;

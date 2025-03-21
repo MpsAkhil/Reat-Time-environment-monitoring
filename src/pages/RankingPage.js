@@ -4,6 +4,7 @@ import './home.css';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
+import Ranking from '../components/Ranking';
 
 function App() {
   return (
@@ -11,10 +12,7 @@ function App() {
       <Header />
       <Sidebar />
       <div className="main-content">
-        
-            {/* Middle part is left empty as requested */}
-          
-        
+        <Ranking />
       </div>
       <Footer />
     </div>
