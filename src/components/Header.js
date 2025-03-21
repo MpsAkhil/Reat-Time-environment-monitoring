@@ -1,14 +1,20 @@
 // src/components/Header.js
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 function Header() {
+  const navigate = useNavigate(); // Initialize useNavigate
+  
+    // Function to handle navigation
+    const handleNavigation = (path) => {
+      navigate(path); // Navigate to the specified path
+    };
   return (
     <header>
       <div className="logo">
         <i className="fas fa-utensils"></i>Logo
       </div>
       <nav className="navbar">
-        <a href="#">Home</a>
+        <a onClick={() => handleNavigation('/')}>Home</a>
         <a href="#footer">About</a>
         <a href="#footer">Services</a>
         <a href="#footer">Contact</a>

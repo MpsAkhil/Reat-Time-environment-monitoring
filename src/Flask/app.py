@@ -40,7 +40,7 @@ END_DATE = "2024-03-19"
 DEFAULT_CITIES = ["Delhi", "Mumbai", "Kolkata", "Chennai", "Bangalore", "Hyderabad", "Pune", "Ahmedabad", "Jaipur", "Lucknow"]
 
 # Geocoder for fetching latitude and longitude
-geolocator = Nominatim(user_agent="weather_correlation_app", timeout=15)
+geolocator = Nominatim(user_agent="weather_correlation_app", timeout=25)
 
 # ----------------------------- Helper Functions -----------------------------
 
