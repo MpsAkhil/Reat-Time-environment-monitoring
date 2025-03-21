@@ -6,6 +6,7 @@ import Ranking from './pages/RankingPage';
 import Image from './pages/imageclassifier';
 import Mapping from './pages/Map';
 import Forecasting from './pages/Forecast';
+import Trend from './pages/Trendanalysis';
 function App() {
     return (
         <Router>
@@ -16,6 +17,7 @@ function App() {
                 <Route path="/mapping" element={<Mapping />} />
                 <Route path="/image" element={<Image />} />
                 <Route path="/forecast" element={<Forecasting />} />
+                <Route path="/trend" element={<Trend />} />
             </Routes>
         </Router>
     );
